@@ -1,0 +1,7 @@
+.project
+.settings
+src/cd/**/index.html
+src/cd/**/*.zip
+src/mp3/**/index.html
+src/mp3/**/*.zip
+

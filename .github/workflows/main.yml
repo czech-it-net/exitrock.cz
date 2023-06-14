@@ -1,0 +1,95 @@
+name: AWS Deploy
+on:
+  push:
+    branches:
+      - main
+
+# Need to clean environment - aws config doesn't work well otherwise with assume role'
+env:
+  AWS_DEFAULT_REGION: ${{ vars.AWS_S3_BUCKET_REGION }}
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+
+  changes:
+    name: Detect file changes
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+      mp3: ${{ steps.filter.outputs.mp3 }}
+      cd: ${{ steps.filter.outputs.cd }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+            mp3:
+              - 'src/mp3/**'
+            cd:
+              - 'src/cd/**'
+
+  deploy:
+    name: S3 Sync / CFront cache clear
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' || contains(github.event.head_commit.message, '[force sync]') }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      - uses: actions/checkout@v3
+        with:
+          repository: czech-it-net/common
+          path: __common
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: ${{ vars.AWS_S3_BUCKET_REGION }}
+          role-to-assume: ${{ vars.AWS_GH_OIDC_ROLE }}
+
+      - name: Sync src to S3
+        run: |
+          aws s3 sync --delete --exclude "mp3/**" --exclude "cd/**" src s3://${{ vars.AWS_S3_BUCKET }}
+
+      - name: CD - Generate archives, index and sync to S3
+        if: ${{ needs.changes.outputs.cd == 'true' || contains(github.event.head_commit.message, '[force sync]') }}
+        run: |
+          cd src/cd
+          find . -mindepth 1 -type d -exec zip -or {}.zip {} \;
+          python ../../__common/scripts/generate_index.py         
+          aws s3 sync --delete --size-only . s3://${{ vars.AWS_S3_BUCKET }}/cd
+
+      - name: MP3 - Generate archive, index and sync mp3 to S3
+        if: ${{ needs.changes.outputs.mp3 == 'true' || contains(github.event.head_commit.message, '[force sync]') }}
+        run: |
+          cd src/mp3
+          zip -o _Exit-Repertoir.zip ./*
+          python ../../__common/scripts/generate_index.py
+          aws s3 sync --delete --size-only . s3://${{ vars.AWS_S3_BUCKET }}/mp3
+
+      - name: Invalidate CloudFront distribution cache and wait
+        run: >
+          aws cloudfront create-invalidation
+          --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+          --paths "/*"
+          --output json | tee cf_inv.json 
+
+          echo Waiting for Invalidation: $(cat cf_inv.json | jq -r .Invalidation.Id)
+    
+          aws cloudfront wait invalidation-completed
+          --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+          --id $(cat cf_inv.json | jq -r .Invalidation.Id)
