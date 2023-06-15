@@ -77,7 +77,7 @@ jobs:
         if: ${{ needs.changes.outputs.mp3 == 'true' || contains(github.event.head_commit.message, '[force sync]') }}
         run: |
           cd src/mp3
-          zip -o _Exit-Repertoir.zip ./*
+          zip -or _Exit-Repertoir.zip ./*
           python ../../__common/scripts/generate_index.py
           aws s3 sync --delete --size-only . s3://${{ vars.AWS_S3_BUCKET }}/mp3
 
