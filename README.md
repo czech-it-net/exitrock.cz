@@ -1,4 +1,4 @@
-[![AWS Deploy](https://github.com/czech-it-net/exitrock.cz/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/czech-it-net/exitrock.cz/actions/workflows/main.yml)
+[![AWS Deploy](https://github.com/czech-it-net/exitrock.cz/actions/workflows/aws-deploy.yml/badge.svg?branch=main)](https://github.com/czech-it-net/exitrock.cz/actions/workflows/aws-deploy.yml)
 
 # exitrock.cz
 Static band website
