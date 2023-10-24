@@ -33,7 +33,7 @@ jobs:
 
       - name: Sync index from S3
         run: |
-          aws s3 sync s3://${{ vars.AWS_S3_BUCKET }}/www ./ --exclude="*" --include="index.html"
+          aws s3 sync s3://${{ vars.AWS_S3_BUCKET }}/www ./ --exclude="*" --include="index.html" --exact-timestamps
 
       - uses: ./.github/actions/update-calendar 
         with:

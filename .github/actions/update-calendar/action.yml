@@ -11,7 +11,7 @@ inputs:
 runs:
   using: composite
   steps:
-  - run: pip install -U icalendar
+  - run: pip install -U icalendar; ls -al
     shell: bash
   - run: ${{ github.action_path }}/calendar.py ${{ inputs.file }} > index.html.new
     shell: bash
