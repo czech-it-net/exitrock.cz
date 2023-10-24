@@ -38,7 +38,7 @@ jobs:
       - uses: ./.github/actions/update-calendar 
         with:
           calendar_url: ${{ secrets.CALENDAR_URL }}
-          file: ./index.html
+          file: index.html
 
       - name: Sync src to S3
         run: |
