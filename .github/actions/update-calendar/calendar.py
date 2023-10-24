@@ -52,10 +52,11 @@ def pull_events(calendar: Calendar | None, future_only: bool = True) -> dict[dat
         if future_only and dt_start < today:
             continue
 
-        summary = event.decoded("SUMMARY").decode()
+        summary = event.decoded("SUMMARY").decode().strip()
         summary = re.sub("Exit - |Exit ", "", summary)  # Strip unnecessary info
 
-        events[dt_start] = summary
+        if not summary.endswith("?"):
+            events[dt_start] = summary
 
     events = dict(sorted(events.items()))
     return events
