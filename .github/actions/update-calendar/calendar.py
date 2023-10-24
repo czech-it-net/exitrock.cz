@@ -67,8 +67,6 @@ def replace_content(filename: str, events: dict[date, str], mark_start: str, mar
     with open(filename) as fd:
         content = fd.read()
 
-    print(filename, content)
-
     calendar_content = (
         "<table id='calendar'>\n"
         + "\n".join(
