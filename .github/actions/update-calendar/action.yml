@@ -19,7 +19,7 @@ runs:
       CALENDAR_URL: ${{ inputs.calendar_url }}
   - run: |
       set +e
-      diff ${{ inputs.file }} index.html.new
+      diff -B ${{ inputs.file }} index.html.new
       if [[ $? > 0 ]]; then mv index.html.new ${{ inputs.file }}; else rm index.html.new; fi
       ls -al
     shell: bash
