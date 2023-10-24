@@ -11,11 +11,11 @@ inputs:
 runs:
   using: composite
   steps:
-  - run: pwd
+  - run: ls -a
     shell: bash
   - run: pip install -U icalendar
     shell: bash
-  - run: ci/calendar.py ${{ inputs.file }} > ${{ inputs.file }}
+  - run: ./.github/actions/update-calendar/calendar.py ${{ inputs.file }} > ${{ inputs.file }}
     shell: bash
     env:
       CALENDAR_URL: ${{ inputs.calendar_url }}
