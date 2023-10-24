@@ -11,7 +11,7 @@ inputs:
 runs:
   using: composite
   steps:
-  - run: pip install -U icalendar; ls -al
+  - run: pip install -U icalendar
     shell: bash
   - run: ${{ github.action_path }}/calendar.py ${{ inputs.file }} > index.html.new
     shell: bash
@@ -22,5 +22,4 @@ runs:
       set +e
       diff -B ${{ inputs.file }} index.html.new
       if [[ $? > 0 ]]; then mv index.html.new ${{ inputs.file }}; else rm index.html.new; fi
-      ls -al
     shell: bash
