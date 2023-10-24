@@ -67,6 +67,8 @@ def replace_content(filename: str, events: dict[date, str], mark_start: str, mar
     with open(filename) as fd:
         content = fd.read()
 
+    print(filename, content)
+
     calendar_content = (
         "<table id='calendar'>\n"
         + "\n".join(
@@ -86,7 +88,6 @@ def main():
     args = get_parser().parse_args()
     calendar = load_calendar(args.ics_url)
     events = pull_events(calendar, future_only=True)
-    print(events)
     print(replace_content(args.filename, events, args.start, args.end))
 
 
