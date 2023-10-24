@@ -21,6 +21,7 @@ runs:
       diff ${{ inputs.file }} index.html.new
       ls -al
     shell: bash
+    continue-on-error: true
   - run: |
       different=`diff ${{ inputs.file }} index.html.new | wc -l`
       if [[ $different > 0 ]]; then mv index.html.new ${{ inputs.file }}; else rm index.html.new; fi
