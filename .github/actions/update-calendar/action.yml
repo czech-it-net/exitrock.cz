@@ -1,0 +1,23 @@
+name: Update calendar
+description: 'Update calendar content in given file'
+inputs:
+  calendar_url:
+    description: 'Calendar to use - URL to ics file'
+    required: true
+  file:
+    description: 'File to edit'
+
+
+runs:
+  using: composite
+  steps:
+  - run: pwd
+    shell: bash
+  - run: pip install -U icalendar
+    shell: bash
+  - run: ci/calendar.py ${{ inputs.file }} > ${{ inputs.file }}
+    shell: bash
+    env:
+      CALENDAR_URL: ${{ inputs.calendar_url }}
+  - run: cat ${{ inputs.file }}
+    shell: bash

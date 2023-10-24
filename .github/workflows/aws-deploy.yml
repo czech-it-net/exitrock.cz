@@ -58,9 +58,10 @@ jobs:
           aws-region: ${{ vars.AWS_S3_BUCKET_REGION }}
           role-to-assume: ${{ vars.AWS_GH_OIDC_ROLE }}
 
-      - uses: ./.github/workflows/update_calendar.yml
+      - uses: actions/update-calendar
         with:
-          do_checkout: false
+          calendar_url: ${{ secrets.CALENDAR_URL }}
+          file: ./src/www/index.html
 
       - name: Sync src to S3
         run: |
