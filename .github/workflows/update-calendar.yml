@@ -50,8 +50,6 @@ jobs:
       - name: Invalidate CloudFront distribution cache and wait
         if: steps.s3_upload.outputs.S3_CHANGED != '0'
         run: >
-          echo ${{ steps.s3_upload.outputs.S3_CHANGED }}
-        
           aws cloudfront create-invalidation
           --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
           --paths "/*"
