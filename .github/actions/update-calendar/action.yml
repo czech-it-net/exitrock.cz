@@ -17,9 +17,11 @@ runs:
     shell: bash
     env:
       CALENDAR_URL: ${{ inputs.calendar_url }}
-  - run: diff ${{ inputs.file }} index.html.new; ls -al
+  - run: |
+      diff ${{ inputs.file }} index.html.new
+      ls -al
     shell: bash
   - run: |
-      different=`diff ${{ inputs.file }} index.html.new | wc -l`;
+      different=`diff ${{ inputs.file }} index.html.new | wc -l`
       if [[ $different > 0 ]]; then mv index.html.new ${{ inputs.file }}; else rm index.html.new; fi
     shell: bash
