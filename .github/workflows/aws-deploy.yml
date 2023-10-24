@@ -20,6 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - uses: dorny/paths-filter@v2
         id: filter
@@ -39,9 +41,9 @@ jobs:
     if: ${{ needs.changes.outputs.src == 'true' || contains(github.event.head_commit.message, '[force sync]') }}
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
+#      - uses: actions/checkout@v4
+#        with:
+#          lfs: true
       - uses: actions/checkout@v4
         with:
           repository: czech-it-net/common
