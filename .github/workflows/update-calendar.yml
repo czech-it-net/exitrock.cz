@@ -11,7 +11,7 @@ permissions:
 jobs:
 
   deploy:
-    name: S3 Sync / CFront cache clear
+    name: Update index on S3
     runs-on: ubuntu-latest
 
     steps:
