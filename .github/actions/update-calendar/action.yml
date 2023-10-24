@@ -17,6 +17,7 @@ runs:
     shell: bash
     env:
       CALENDAR_URL: ${{ inputs.calendar_url }}
+  # Only rewrite original file if there's a difference other than blank lines'
   - run: |
       set +e
       diff -B ${{ inputs.file }} index.html.new

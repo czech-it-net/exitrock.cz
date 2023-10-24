@@ -55,8 +55,10 @@ def pull_events(calendar: Calendar | None, future_only: bool = True) -> dict[dat
         summary = event.decoded("SUMMARY").decode().strip()
         summary = re.sub("Exit - |Exit ", "", summary)  # Strip unnecessary info
 
-        if not summary.endswith("?"):
-            events[dt_start] = summary
+        if "?" in summary:  # Don't add tentative
+            continue
+
+        events[dt_start] = summary
 
     events = dict(sorted(events.items()))
     return events
