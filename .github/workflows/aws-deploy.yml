@@ -61,7 +61,6 @@ jobs:
       - uses: ./.github/workflows/update_calendar.yml
         with:
           do_checkout: false
-        secrets: inherit
 
       - name: Sync src to S3
         run: |
