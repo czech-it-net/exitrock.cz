@@ -48,7 +48,7 @@ jobs:
           rm aws_sync_out.txt
 
       - name: Invalidate CloudFront distribution cache and wait
-        if: ${{ steps.s3_upload.outputs.S3_CHANGED }} != '0'
+        if: steps.s3_upload.outputs.S3_CHANGED != '0'
         run: >
           echo ${{ steps.s3_upload.outputs.S3_CHANGED }}
         
