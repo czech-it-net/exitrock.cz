@@ -1,0 +1,50 @@
+name: Update calendar
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+
+  deploy:
+    name: S3 Sync / CFront cache clear
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          unset-current-credentials: true
+          aws-region: ${{ vars.AWS_S3_BUCKET_REGION }}
+          role-to-assume: ${{ vars.AWS_GH_OIDC_ROLE }}
+
+      - uses: ./.github/actions/update-calendar 
+        with:
+          calendar_url: ${{ secrets.CALENDAR_URL }}
+          file: ./src/www/index.html
+
+      - name: Sync src to S3
+        run: |
+          aws s3 sync --delete --exclude "mp3/**" --exclude "cd/**" src s3://${{ vars.AWS_S3_BUCKET }}
+
+      - name: Invalidate CloudFront distribution cache and wait
+        run: >
+          aws cloudfront create-invalidation
+          --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+          --paths "/*"
+          --output json | tee cf_inv.json 
+
+          echo Waiting for Invalidation: $(cat cf_inv.json | jq -r .Invalidation.Id)
+    
+          aws cloudfront wait invalidation-completed
+          --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+          --id $(cat cf_inv.json | jq -r .Invalidation.Id)
