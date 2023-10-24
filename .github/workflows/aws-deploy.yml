@@ -58,7 +58,7 @@ jobs:
           aws-region: ${{ vars.AWS_S3_BUCKET_REGION }}
           role-to-assume: ${{ vars.AWS_GH_OIDC_ROLE }}
 
-      - uses: actions/update-calendar
+      - uses: ./.github/actions/update-calendar
         with:
           calendar_url: ${{ secrets.CALENDAR_URL }}
           file: ./src/www/index.html
