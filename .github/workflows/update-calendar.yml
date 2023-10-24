@@ -33,7 +33,7 @@ jobs:
 
       - name: Sync index from S3
         run: |
-          aws s3 sync s3://${{ vars.AWS_S3_BUCKET }}/www/index.html ./index.html
+          aws s3 sync s3://${{ vars.AWS_S3_BUCKET }}/www/index.html ./
 
       - uses: ./.github/actions/update-calendar 
         with:
@@ -42,7 +42,7 @@ jobs:
 
       - name: Sync src to S3
         run: |
-          aws s3 sync ./index.html s3://${{ vars.AWS_S3_BUCKET }}/www/index.html
+          aws s3 sync ./index.html s3://${{ vars.AWS_S3_BUCKET }}/www/
 
       - name: Invalidate CloudFront distribution cache and wait
         run: >
