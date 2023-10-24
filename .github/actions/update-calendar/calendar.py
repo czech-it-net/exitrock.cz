@@ -86,6 +86,7 @@ def main():
     args = get_parser().parse_args()
     calendar = load_calendar(args.ics_url)
     events = pull_events(calendar, future_only=True)
+    print(events)
     print(replace_content(args.filename, events, args.start, args.end))
 
 
