@@ -12,6 +12,7 @@
 
 body {
  padding: 20px;
+ font-family: sans-serif;
 }
 
 a {
@@ -23,12 +24,28 @@ h1 {
  margin-left: 40px;
 }
 
+table#calendar {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2em;
+  font-size: 20px;
+}
+table#calendar tr:first-child {
+  font-weight: bold;
+}
+table#calendar td {
+  padding-left: 0.5em;
+  line-height: 150%
+}
+table#calendar td.date {
+  text-align: right;
+}
+
 div.main_cont {
  width: 100%;
  text-align: center;
  font-family: sans-serif;
  font-weight: bold;
- font-size: 40px;
  margin-bottom: 60px;
 }
 
@@ -50,13 +67,11 @@ img.contact {
   <img id="logo" src="img/exit-logo.jpg" width="500px" />
  </div>
 
- <!--
-	<div id="events" class="main_cont">
-		<p>11.8. - Bohdalov</p>
-	</div>
-	-->
 
  <div id="contact" class="main_cont">
+   <!-- Calendar content will be replaced dynamically -->
+   <!-- Calendar start -->
+   <!-- Calendar end -->
   <span>
     <a href="https://www.facebook.com/Exit-357290194285618/">
       <img src="img/facebook-logo.jpg" class="contact" />
