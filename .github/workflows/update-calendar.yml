@@ -41,10 +41,14 @@ jobs:
           file: index.html
 
       - name: Sync src to S3
+        id: s3_upload
         run: |
-          aws s3 sync ./ s3://${{ vars.AWS_S3_BUCKET }}/www --exclude="*" --include="index.html"
+          aws s3 sync ./ s3://${{ vars.AWS_S3_BUCKET }}/www --exclude="*" --include="index.html" | tee aws_sync_out.txt
+          echo "S3_CHANGED=`grep upload aws_sync_out.txt | wc -l`" >> $GITHUB_OUTPUT
+          rm aws_sync_out.txt
 
       - name: Invalidate CloudFront distribution cache and wait
+        if: ${{ steps.s3_upload.outputs.S3_CHANGED }} > 0
         run: >
           aws cloudfront create-invalidation
           --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
