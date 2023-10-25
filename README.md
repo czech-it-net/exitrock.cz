@@ -19,4 +19,4 @@ Served from AWS
 
 ### CI Event calendar updates from google
 * CALENDAR_URL secret contains google calendar to take events from
-* update-calendar workflow will update index.html with current events
+* update-calendar workflow will update index.html with current events on schedule
