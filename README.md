@@ -18,5 +18,5 @@ Served from AWS
 4. Subdomains are directed to src subdirectories via CloudFront viewer-request function
 
 ### CI Event calendar updates from google
-* CALENDAR_URL secret contains google calendar to take events from
+* CALENDAR_URL secret contains google calendar ics url to take events from
 * update-calendar workflow will update index.html with current events on schedule
