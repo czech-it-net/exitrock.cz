@@ -73,11 +73,15 @@ def replace_content(filename: str, events: dict[date, list], mark_start: str, ma
         content = fd.read()
 
     calendar_content = "<table id='calendar'>\n"
-    for date, summary_list in events.items():
-        for summary in summary_list:
-            calendar_content += (
-                f"<tr><td class='date'>{date.strftime('%-d.%-m.%Y')}</td><td>{summary}</td></tr>\n"
-            )
+    if events:
+        for date, summary_list in events.items():
+            for summary in summary_list:
+                calendar_content += (
+                    f"<tr><td class='date'>{date.strftime('%-d.%-m.%Y')}</td><td>{summary}</td></tr>\n"
+                )
+    else:
+        calendar_content += "<tr><td>Zatím žádné akce</td></tr>\n"
+
     calendar_content += "</table>"
 
     output = re.sub(

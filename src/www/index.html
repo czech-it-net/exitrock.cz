@@ -1,3 +1,5 @@
+<!doctype html>
+
 <html>
 
 <head>
@@ -6,22 +8,39 @@
 <meta name="keywords" content="exit,rock,zabava,koncert,zdar">
 
 <style>
-:root {
- color-scheme: only light;
+.dark-theme {
+ display: none
 }
 
 body {
+ background-color: white;
  padding: 20px;
  font-family: sans-serif;
+ color: black;
 }
 
 a {
  text-decoration: none;
+ color: #44f;
 }
+a:hover {
+ color: #77f;
+}
+
 
 h1 {
  color: maroon;
  margin-left: 40px;
+}
+
+div#header {
+  height: 280px;
+}
+
+div#header img {
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
 }
 
 table#calendar {
@@ -35,7 +54,8 @@ table#calendar tr:first-child {
 }
 table#calendar td {
   padding-left: 0.5em;
-  line-height: 150%
+  line-height: 150%;
+  text-align: left;
 }
 table#calendar td.date {
   text-align: right;
@@ -44,9 +64,8 @@ table#calendar td.date {
 div.main_cont {
  width: 100%;
  text-align: center;
- font-family: sans-serif;
  font-weight: bold;
- margin-bottom: 60px;
+ margin-bottom: 40px;
 }
 
 div#contact span {
@@ -59,29 +78,58 @@ img.contact {
  vertical-align: middle;
  margin-right: 5px;
 }
+
+
+@media (prefers-color-scheme: dark) {
+  .dark-theme {
+    display: block;
+  }
+
+  .light-theme {
+    display: none;
+  }
+
+  .invert {
+    filter: invert(50%);
+  }
+
+  body {
+    background-color: #222;
+    color: white;
+  }
+
+  a {
+   color: #77f;
+  }
+  a:hover {
+   color: #aaf;
+  }
+}
+
 </style>
 </head>
 
 <body>
  <div id="header" class="main_cont">
-  <img id="logo" src="img/exit-logo.jpg" width="500px" />
+  <img id="logo" class="light-theme" src="img/exit-logo-black.png" />
+  <img id="logo" class="dark-theme" src="img/exit-logo-white.png" />
  </div>
 
+ <!-- Calendar content will be replaced dynamically -->
+ <!-- Calendar start -->
+ <!-- Calendar end -->
 
  <div id="contact" class="main_cont">
-   <!-- Calendar content will be replaced dynamically -->
-   <!-- Calendar start -->
-   <!-- Calendar end -->
   <span>
-    <a href="https://www.facebook.com/Exit-357290194285618/">
+    <a href="https://www.facebook.com/Exit-357290194285618/" title="Facebook">
       <img src="img/fb-logo.png" class="contact" />
     </a>
-    <a href="https://open.spotify.com/artist/3dmVVuzFUM7crxntfVEuCL">
+    <a href="https://open.spotify.com/artist/3dmVVuzFUM7crxntfVEuCL" title="Spotify">
       <img src="img/spotify-logo.png" class="contact" />
     </a>
   </span>
   <span>
-    <img src="img/phone-logo.svg" class="contact" />
+    <img src="img/phone-logo.svg" class="contact invert" />
     Radim Píbil: +420-777-558-787 | <a href="media/exit-stageplan.pdf">Stage plan</a>
   </span>
  </div>
