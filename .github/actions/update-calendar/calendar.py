@@ -60,6 +60,7 @@ def pull_events(calendar: Calendar | None, future_only: bool = True) -> dict[dat
             continue
 
         events[dt_start].append(summary)
+        events[dt_start].sort()
 
     events = dict(sorted(events.items()))
     return events
