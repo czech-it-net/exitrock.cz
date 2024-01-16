@@ -1,5 +1,6 @@
 #! /bin/env python
 
+from _collections import defaultdict
 import argparse
 from datetime import date
 from os import environ
@@ -39,11 +40,11 @@ def load_calendar(url: str) -> Calendar | None:
     return calendar
 
 
-def pull_events(calendar: Calendar | None, future_only: bool = True) -> dict[date, str]:
+def pull_events(calendar: Calendar | None, future_only: bool = True) -> dict[date, list]:
     if calendar is None:
         return {}
 
-    events = {}
+    events = defaultdict(list)
     today = date.today()
 
     for event in calendar.walk("VEVENT"):
@@ -58,26 +59,25 @@ def pull_events(calendar: Calendar | None, future_only: bool = True) -> dict[dat
         if "?" in summary:  # Don't add tentative
             continue
 
-        events[dt_start] = summary
+        events[dt_start].append(summary)
 
     events = dict(sorted(events.items()))
     return events
 
 
-def replace_content(filename: str, events: dict[date, str], mark_start: str, mark_end: str) -> str:
+def replace_content(filename: str, events: dict[date, list], mark_start: str, mark_end: str) -> str:
     content = ""
 
     with open(filename) as fd:
         content = fd.read()
 
-    calendar_content = (
-        "<table id='calendar'>\n"
-        + "\n".join(
-            f"<tr><td class='date'>{date.strftime('%-d.%-m.%Y')}</td><td>{summary}</td></tr>"
-            for date, summary in events.items()
-        )
-        + "\n</table>"
-    )
+    calendar_content = "<table id='calendar'>\n"
+    for date, summary_list in events.items():
+        for summary in summary_list:
+            calendar_content += (
+                f"<tr><td class='date'>{date.strftime('%-d.%-m.%Y')}</td><td>{summary}</td></tr>\n"
+            )
+    calendar_content += "</table>"
 
     output = re.sub(
         f"({mark_start}).*({mark_end})", r"\1\n" + calendar_content + r"\n\2\n", content, flags=re.DOTALL

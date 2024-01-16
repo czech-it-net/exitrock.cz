@@ -2,6 +2,8 @@
 .pydevproject
 .settings
 
+__pycache__
+
 src/cd/**/index.html
 src/cd/**/*.zip
 src/mp3/**/index.html
