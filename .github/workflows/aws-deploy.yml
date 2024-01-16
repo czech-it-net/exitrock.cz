@@ -14,6 +14,7 @@ jobs:
     name: Detect file changes
     runs-on: ubuntu-latest
     outputs:
+      github: ${{ steps.filter.outputs.github }}
       src: ${{ steps.filter.outputs.src }}
       mp3: ${{ steps.filter.outputs.mp3 }}
       cd: ${{ steps.filter.outputs.cd }}
