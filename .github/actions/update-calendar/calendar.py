@@ -18,7 +18,7 @@ DEFAULT_MARK_END = "<!-- Calendar end -->"
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="calendar",
-        description=f"Replace content between start and end marks",
+        description=f"Replace content between start and end marks, output to stdout",
     )
     parser.add_argument("filename", help="Source filename")
     parser.add_argument(
