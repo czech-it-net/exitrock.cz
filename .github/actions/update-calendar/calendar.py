@@ -1,15 +1,14 @@
 #! /bin/env python
 
-from _collections import defaultdict
 import argparse
+import re
+import urllib.request
 from datetime import date
 from os import environ
 from pprint import pprint
-import re
-import urllib.request
 
+from _collections import defaultdict
 from icalendar import Calendar
-
 
 DEFAULT_MARK_START = "<!-- Calendar start -->"
 DEFAULT_MARK_END = "<!-- Calendar end -->"
@@ -76,6 +75,8 @@ def replace_content(filename: str, events: dict[date, list], mark_start: str, ma
     if events:
         for date, summary_list in events.items():
             for summary in summary_list:
+                # Remove [1], [2],.. used to sort events
+                summary = re.sub(r"\[\d\] ", "", summary)
                 calendar_content += (
                     f"<tr><td class='date'>{date.strftime('%-d.%-m.%Y')}</td><td>{summary}</td></tr>\n"
                 )
