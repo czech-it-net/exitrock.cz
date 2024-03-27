@@ -22,10 +22,11 @@ body {
 
 a {
  text-decoration: none;
- color: #44f;
+ color: #11f;
 }
 a:hover {
- color: #77f;
+ color: #66f;
+ text-decoration: underline;
 }
 
 
@@ -66,13 +67,18 @@ div.main_cont {
  width: 100%;
  text-align: center;
  font-weight: bold;
+ font-size: 17px;
  margin-bottom: 40px;
 }
 
 div#contact span {
  margin-right: 0px;
- font-size: 17px;
 }
+
+div#contact div {
+  margin-top: 1.5em;
+ }
+ 
 
 img.contact {
  width: 40px;
@@ -100,10 +106,10 @@ img.contact {
   }
 
   a {
-   color: #77f;
+   color: #aaf;
   }
   a:hover {
-   color: #aaf;
+   color: #66f;
   }
 }
 
@@ -131,11 +137,22 @@ img.contact {
       <img src="img/youtube-logo.png" class="contact" />
     </a>
   </span>
-  <span>
-    <img src="img/phone-logo.svg" class="contact invert" />
-    Radim Píbil: +420-777-558-787 | <a href="media/exit-zr-stageplan.pdf">Stage plan</a>
-  </span>
+  <div>
+    Radim Píbil: +420-777-558-787 | <a id="em" />
+  </div>
+  <div>
+    <a href="media/exit-zr-stageplan.pdf">Stage plan</a>
+  </div>
  </div>
 </body>
+
+<script>
+  // Protect email address from spam bots (base64 encoded)
+  em_decoded = atob("cmFkaW0ucGliaWxAZW1haWwuY3o=");
+
+  const em = document.getElementById('em');
+  em.textContent = em_decoded;
+  em.setAttribute("href", "mailto:".concat(em_decoded));
+</script>
 
 </html>
