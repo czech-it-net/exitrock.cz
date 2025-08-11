@@ -17,7 +17,7 @@ runs:
       cache: 'pip'
   - run: pip install -U icalendar
     shell: bash
-  - run: ${{ github.action_path }}/calendar.py ${{ inputs.file }} > index.html.new
+  - run: ${{ github.action_path }}/update-calendar.py ${{ inputs.file }} > index.html.new
     shell: bash
     env:
       CALENDAR_URL: ${{ inputs.calendar_url }}

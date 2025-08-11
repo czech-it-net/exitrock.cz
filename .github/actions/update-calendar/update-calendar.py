@@ -3,11 +3,11 @@
 import argparse
 import re
 import urllib.request
+from collections import defaultdict
 from datetime import date
 from os import environ
 from pprint import pprint
 
-from _collections import defaultdict
 from icalendar import Calendar
 
 DEFAULT_MARK_START = "<!-- Calendar start -->"
@@ -17,7 +17,7 @@ DEFAULT_MARK_END = "<!-- Calendar end -->"
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="calendar",
-        description=f"Replace content between start and end marks, output to stdout",
+        description="Replace content between start and end marks, output to stdout",
     )
     parser.add_argument("filename", help="Source filename")
     parser.add_argument(
@@ -91,7 +91,7 @@ def replace_content(filename: str, events: dict[date, list], mark_start: str, ma
     return output
 
 
-def main():
+def main() -> None:
     args = get_parser().parse_args()
     calendar = load_calendar(args.ics_url)
     events = pull_events(calendar, future_only=True)
