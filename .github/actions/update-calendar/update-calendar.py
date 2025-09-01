@@ -8,7 +8,7 @@ from datetime import date
 from os import environ
 from pprint import pprint
 
-from icalendar import Calendar
+from icalendar import Calendar, Component
 
 DEFAULT_MARK_START = "<!-- Calendar start -->"
 DEFAULT_MARK_END = "<!-- Calendar end -->"
@@ -30,7 +30,7 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def load_calendar(url: str) -> Calendar | None:
+def load_calendar(url: str) -> Component | None:
     calendar = None
 
     with urllib.request.urlopen(url, timeout=3) as resp:
@@ -39,7 +39,7 @@ def load_calendar(url: str) -> Calendar | None:
     return calendar
 
 
-def pull_events(calendar: Calendar | None, future_only: bool = True) -> dict[date, list]:
+def pull_events(calendar: Component | None, future_only: bool = True) -> dict[date, list]:
     if calendar is None:
         return {}
 
