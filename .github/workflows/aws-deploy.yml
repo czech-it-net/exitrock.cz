@@ -56,7 +56,7 @@ jobs:
           python-version: '3.13'
 
       - name: Set AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           unset-current-credentials: true
           aws-region: ${{ vars.AWS_S3_BUCKET_REGION }}
