@@ -34,8 +34,6 @@ jobs:
               - 'src/mp3/**'
             cd:
               - 'src/cd/**'
-            30:
-              - 'src/30/**'
 
   deploy:
     name: S3 Sync / CFront cache clear
