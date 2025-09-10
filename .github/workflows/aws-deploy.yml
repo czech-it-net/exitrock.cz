@@ -34,6 +34,8 @@ jobs:
               - 'src/mp3/**'
             cd:
               - 'src/cd/**'
+            30:
+              - 'src/30/**'
 
   deploy:
     name: S3 Sync / CFront cache clear
@@ -62,7 +64,7 @@ jobs:
           aws-region: ${{ vars.AWS_S3_BUCKET_REGION }}
           role-to-assume: ${{ vars.AWS_GH_OIDC_ROLE }}
 
-      - uses: ./.github/actions/update-calendar 
+      - uses: ./.github/actions/update-calendar
         with:
           calendar_url: ${{ secrets.CALENDAR_URL }}
           file: ./src/www/index.html
@@ -76,7 +78,7 @@ jobs:
         run: |
           cd src/cd
           find . -mindepth 1 -type d -exec zip -or {}.zip {} \;
-          python ../../__common/scripts/generate_index.py         
+          python ../../__common/scripts/generate_index.py
           aws s3 sync --delete --size-only . s3://${{ vars.AWS_S3_BUCKET }}/cd
 
       - name: MP3 - Generate archive, index and sync mp3 to S3
@@ -92,10 +94,10 @@ jobs:
           aws cloudfront create-invalidation
           --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
           --paths "/*"
-          --output json | tee cf_inv.json 
+          --output json | tee cf_inv.json
 
           echo Waiting for Invalidation: $(cat cf_inv.json | jq -r .Invalidation.Id)
-    
+
           aws cloudfront wait invalidation-completed
           --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
           --id $(cat cf_inv.json | jq -r .Invalidation.Id)
