@@ -1,0 +1,96 @@
+.dark-theme {
+    display: none
+}
+
+body {
+    padding: 20px;
+    font-family: cursive;
+    font-size: 30px;
+    background-image: url('img/exit-30-plakat_sm.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    /* dark overlay */
+    background-color: rgba(0, 0, 0, 0.9);
+    background-blend-mode: darken;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(185, 171, 92);
+}
+
+a:hover {
+    color: rgb(185, 171, 92);
+    text-decoration: underline;
+}
+
+
+h1 {
+    color: rgb(185, 171, 92);
+    font-size: 250%;
+}
+
+h2 {
+    margin-top: 2em;
+}
+
+div#header {
+    height: 280px;
+    margin-bottom: 3em;
+}
+
+div#header img {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    width: 500px;
+}
+
+table#calendar {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2em;
+    font-size: 20px;
+}
+
+table#calendar tr:first-child {
+    font-weight: bold;
+}
+
+table#calendar td {
+    padding-left: 0.5em;
+    line-height: 150%;
+    text-align: left;
+}
+
+table#calendar td.date {
+    text-align: right;
+}
+
+div.main_cont {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+div#contact span {
+    margin-right: 0px;
+}
+
+div#contact div {
+    margin-top: 2em;
+}
+
+
+img.contact {
+    width: 40px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.invert {
+    filter: invert(100%);
+}

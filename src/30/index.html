@@ -1,0 +1,72 @@
+<!doctype html>
+
+<html lang="cs" xml:lang="cs">
+
+<head>
+  <title>Exit - Rocková kapela Žďár nad Sázavou</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="Exit - Rocková kapela Žďár nad Sázavou">
+  <meta name="keywords" content="exit,rock,zabava,koncert,zdar">
+  <link rel="icon" type="image/x-icon" href="/img/exit-favicon.png">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <div id="header" class="main_cont">
+    <!-- Shortcuts -->
+    <div id="shortcuts" style="margin-bottom: 1em;">
+      <a href="#informace">Informace</a> |
+      <a href="#program">Program</a>
+    </div>
+    <img id="logo" class="invert" src="../www/img/exit-logo-black.png" alt="Exit logo" />
+  </div>
+
+  <div id="main" class="main_cont">
+    <h1>30 let (1995 - 2025)</h1>
+    <p>
+      Srdečně vás zveme na oslavu 30. výročí kapely Exit.<br>
+      Přijďte s námi zavzpomínat, užít si skvělou hudbu a atmosféru.<br>
+      Těšíme se na vás!
+    </p>
+    <h2 id="informace">Informace</h2>
+    <p>
+      14. září 2024 od 19:00<br>
+      KD Žďár nad Sázavou<br>
+      Vstupné: XXX Kč
+    </p>
+    <h2 id="program">Program</h2>
+    <p>
+      20:30 - Morava<br>
+      22:30 - Exit<br>
+      00:00 - Liquid Face<br>
+      host: Zbyněk Mrkvička (Titan)
+    </p>
+  </div>
+
+  <div id="contact" class="main_cont">
+    <span>
+      <a href="https://www.facebook.com/exitzr" title="Facebook">
+        <img src="../www/img/fb-logo.png" class="contact" alt="Facebook logo" />
+      </a>
+      <a href="https://open.spotify.com/artist/3dmVVuzFUM7crxntfVEuCL" title="Spotify">
+        <img src="../www/img/spotify-logo.png" class="contact" alt="Spotify logo" />
+      </a>
+      <a href="https://www.youtube.com/@ExitrockCZ" title="Youtube">
+        <img src="../www/img/youtube-logo.png" class="contact" alt="YouTube logo" />
+      </a>
+    </span>
+
+  </div>
+</body>
+
+<script>
+  // Protect email address from spam bots (base64 encoded)
+  const em_decoded = atob("cmFkaW0ucGliaWxAZW1haWwuY3o=");
+
+  const em = document.getElementById('em');
+  em.textContent = em_decoded;
+  em.setAttribute("href", "mailto:".concat(em_decoded));
+</script>
+
+</html>
