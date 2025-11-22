@@ -20,7 +20,7 @@ jobs:
       cd: ${{ steps.filter.outputs.cd }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: dorny/paths-filter@v3
         id: filter
@@ -43,10 +43,10 @@ jobs:
     if: ${{ needs.changes.outputs.src == 'true' || needs.changes.outputs.github == 'true' || contains(github.event.head_commit.message, '[force sync]') }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           lfs: true
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           repository: czech-it-net/common
           path: __common
