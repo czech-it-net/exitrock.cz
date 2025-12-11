@@ -13,11 +13,11 @@ runs:
   steps:
   - uses: actions/setup-python@v6
     with:
-      python-version: '3.13'
+      python-version: '3.14'
       cache: 'pip'
   - run: pip install -U icalendar
     shell: bash
-  - run: ${{ github.action_path }}/update-calendar.py ${{ inputs.file }} > index.html.new
+  - run: ${{ github.action_path }}/update_calendar.py ${{ inputs.file }} > index.html.new
     shell: bash
     env:
       CALENDAR_URL: ${{ inputs.calendar_url }}
