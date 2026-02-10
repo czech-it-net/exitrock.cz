@@ -23,7 +23,7 @@ def get_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("filename", help="Source filename")
     parser.add_argument(
-        "--ics_url",
+        "--ics-url",
         help="Source calendar url (ICAL) [CALENDAR_URL env var]",
         default=environ.get("CALENDAR_URL"),
     )
@@ -65,6 +65,7 @@ def pull_events(calendar: Component | None, future_only: bool = True) -> dict[da
 
     for event in calendar.walk("VEVENT"):
         dt_start = event.decoded("DTSTART")
+        description = str(event.get("DESCRIPTION", "")).strip()
 
         if future_only and dt_start < today:
             continue
@@ -73,6 +74,9 @@ def pull_events(calendar: Component | None, future_only: bool = True) -> dict[da
         summary = re.sub("Exit - |Exit ", "", summary)  # Strip unnecessary info
 
         if "?" in summary:  # Don't add tentative
+            continue
+
+        if "[noweb]" in description:  # Don't add events marked as "no web"
             continue
 
         events[dt_start].append(summary)
