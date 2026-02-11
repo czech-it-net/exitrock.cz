@@ -15,7 +15,7 @@ runs:
     with:
       python-version: '3.14'
       cache: 'pip'
-  - run: pip install -U icalendar
+  - run: pip install -U -r ${{ github.action_path }}/requirements.txt
     shell: bash
   - run: ${{ github.action_path }}/update_calendar.py ${{ inputs.file }} > index.html.new
     shell: bash
