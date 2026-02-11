@@ -65,7 +65,6 @@ def pull_events(calendar: Component | None, future_only: bool = True) -> dict[da
 
     for event in calendar.walk("VEVENT"):
         dt_start = event.decoded("DTSTART")
-        description = event.decoded("DESCRIPTION", "").strip()
 
         if future_only and dt_start < today:
             continue
@@ -78,6 +77,8 @@ def pull_events(calendar: Component | None, future_only: bool = True) -> dict[da
 
         if "?" in summary:  # Don't add tentative
             continue
+
+        description = event.decoded("DESCRIPTION", "").strip()
 
         if "[noweb]" in description:  # Don't add events marked as "no web"
             continue
