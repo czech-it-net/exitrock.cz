@@ -65,13 +65,16 @@ def pull_events(calendar: Component | None, future_only: bool = True) -> dict[da
 
     for event in calendar.walk("VEVENT"):
         dt_start = event.decoded("DTSTART")
-        description = str(event.get("DESCRIPTION", "")).strip()
+        description = event.decoded("DESCRIPTION", b"").decode().strip()
 
         if future_only and dt_start < today:
             continue
 
-        summary = event.decoded("SUMMARY").decode().strip()
+        summary = event.decoded("SUMMARY", b"").decode().strip()
         summary = re.sub("Exit - |Exit ", "", summary)  # Strip unnecessary info
+
+        if not summary:
+            continue
 
         if "?" in summary:  # Don't add tentative
             continue
