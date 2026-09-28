@@ -7,11 +7,48 @@ import urllib.request
 from collections import defaultdict
 from datetime import date
 from os import environ
+from pathlib import Path
 
 from icalendar import Calendar, Component
 
 DEFAULT_MARK_START = "<!-- Calendar start -->"
 DEFAULT_MARK_END = "<!-- Calendar end -->"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+SRC_ROOT = (REPO_ROOT / "src").resolve()
+ICS_URL_PREFIX = "https://calendar.google.com/calendar/ical/"
+
+
+def validate_filename(filename: str) -> Path:
+    """Resolve a filename and ensure it stays inside the repository src subtree."""
+
+    path = Path(filename)
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    path = path.resolve()
+
+    if not path.is_relative_to(SRC_ROOT):
+        raise ValueError("Filename must point to a file inside the repository src directory")
+
+    return path
+
+
+def validate_ics_url(url: str | None) -> str:
+    """Ensure the calendar URL uses an approved Google Calendar iCal prefix."""
+
+    if url is None or not url.startswith(ICS_URL_PREFIX):
+        raise ValueError(f"Calendar URL must start with {ICS_URL_PREFIX}")
+
+    return url
+
+
+class CalendarRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Only follow redirects to approved calendar URLs."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not newurl.startswith(ICS_URL_PREFIX):
+            raise ValueError("Calendar URL redirected to an unsupported address")
+
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -39,7 +76,8 @@ def load_calendar(url: str) -> Component | None:
 
     calendar = None
 
-    with urllib.request.urlopen(url, timeout=3) as resp:
+    opener = urllib.request.build_opener(CalendarRedirectHandler())
+    with opener.open(url, timeout=3) as resp:
         calendar = Calendar.from_ical(resp.read())
 
     return calendar
@@ -135,10 +173,17 @@ def replace_content(filename: str, events: dict[date, list], mark_start: str, ma
 def main() -> None:
     """Load calendar, pull events, replace content and output to stdout."""
 
-    args = get_parser().parse_args()
-    calendar = load_calendar(args.ics_url)
+    parser = get_parser()
+    args = parser.parse_args()
+    try:
+        filename = validate_filename(args.filename)
+        ics_url = validate_ics_url(args.ics_url)
+    except ValueError as error:
+        parser.error(str(error))
+
+    calendar = load_calendar(ics_url)
     events = pull_events(calendar, future_only=True)
-    print(replace_content(args.filename, events, args.start, args.end))
+    print(replace_content(str(filename), events, args.start, args.end))
 
 
 if __name__ == "__main__":

@@ -30,17 +30,18 @@ jobs:
 
       - name: Sync index from S3
         run: |
-          aws s3 sync s3://${{ vars.AWS_S3_BUCKET }}/www ./ --exclude="*" --include="index.html" --exact-timestamps
+          mkdir -p ./src/www
+          aws s3 sync s3://${{ vars.AWS_S3_BUCKET }}/www ./src/www/ --exclude="*" --include="index.html" --exact-timestamps
 
       - uses: ./.github/actions/update-calendar 
         with:
           calendar_url: ${{ secrets.CALENDAR_URL }}
-          file: index.html
+          file: ./src/www/index.html
 
       - name: Sync src to S3
         id: s3_upload
         run: |
-          aws s3 sync ./ s3://${{ vars.AWS_S3_BUCKET }}/www --exclude="*" --include="index.html" | tee aws_sync_out.txt
+          aws s3 sync ./src/www/ s3://${{ vars.AWS_S3_BUCKET }}/www --exclude="*" --include="index.html" | tee aws_sync_out.txt
           echo "S3_CHANGED=`grep upload aws_sync_out.txt | wc -l`" >> $GITHUB_OUTPUT
           rm aws_sync_out.txt
 
