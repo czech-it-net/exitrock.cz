@@ -12,15 +12,15 @@
 </head>
 
 <body>
- <div id="header" class="main_cont">
+<div id="header" class="main_cont">
   <img id="logo" class="invert" src="img/exit-logo-black.png" alt="Exit kapela logo" />
- </div>
+</div>
 
- <!-- Calendar content will be replaced dynamically -->
- <!-- Calendar start -->
- <!-- Calendar end -->
+<!-- Calendar content will be replaced dynamically -->
+<!-- Calendar start -->
+<!-- Calendar end -->
 
- <div id="contact" class="main_cont">
+<div id="contact" class="main_cont">
   <span>
     <a href="https://www.facebook.com/exitzr/" title="Facebook">
       <img src="img/fb-logo.png" class="contact" alt="Facebook logo" />
@@ -33,18 +33,17 @@
     </a>
   </span>
   <div>
-    Radim Píbil: +420 777 558 787 | <a id="em" />
+    Radim Píbil: +420 777 558 787 | <a id="em">E-mail</a>
   </div>
   <div>
     <a href="media/exit-zr-stageplan.pdf">Stage plan</a> |
     <a href="media/exit-zr-osa.pdf">Formulář OSA</a>
   </div>
- </div>
+</div>
 </body>
 
 <script>
-  // Protect email address from spam bots (base64 encoded)
-      const em_decoded = atob("cmFkaW0ucGliaWxAZW1haWwuY3o=");
+  const em_decoded = atob("cmFkaW0ucGliaWxAZW1haWwuY3o=");
 
   const em = document.getElementById('em');
   em.textContent = em_decoded;
