@@ -15,7 +15,7 @@ DEFAULT_MARK_START = "<!-- Calendar start -->"
 DEFAULT_MARK_END = "<!-- Calendar end -->"
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SRC_ROOT = (REPO_ROOT / "src").resolve()
-ICS_URL_PREFIX = "https://calendar.google.com/calendar/ical/"
+ALLOWED_ICS_URL_PREFIXES = ("https://calendar.google.com/calendar/ical/",)
 
 
 def validate_filename(filename: str) -> Path:
@@ -35,8 +35,9 @@ def validate_filename(filename: str) -> Path:
 def validate_ics_url(url: str | None) -> str:
     """Ensure the calendar URL uses an approved Google Calendar iCal prefix."""
 
-    if url is None or not url.startswith(ICS_URL_PREFIX):
-        raise ValueError(f"Calendar URL must start with {ICS_URL_PREFIX}")
+    if url is None or not url.startswith(ALLOWED_ICS_URL_PREFIXES):
+        prefixes = ", ".join(ALLOWED_ICS_URL_PREFIXES)
+        raise ValueError(f"Calendar URL must start with one of: {prefixes}")
 
     return url
 
@@ -45,7 +46,7 @@ class CalendarRedirectHandler(urllib.request.HTTPRedirectHandler):
     """Only follow redirects to approved calendar URLs."""
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        if not newurl.startswith(ICS_URL_PREFIX):
+        if not newurl.startswith(ALLOWED_ICS_URL_PREFIXES):
             raise ValueError("Calendar URL redirected to an unsupported address")
 
         return super().redirect_request(req, fp, code, msg, headers, newurl)
