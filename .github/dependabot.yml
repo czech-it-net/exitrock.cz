@@ -10,6 +10,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories:
+      - "/"                   # .github/workflows
+      - "/.github/actions/*"  # every composite action folder
     schedule:
       interval: "weekly"
+    groups:
+      actions:
+        patterns: ["*"]
