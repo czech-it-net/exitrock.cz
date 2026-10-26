@@ -9,12 +9,22 @@ updates:
     directory: "/.github/actions/update-calendar" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      all-deps:
+        patterns: ["*"]
+
   - package-ecosystem: "github-actions"
-    directories:
-      - "/"                   # .github/workflows
-      - "/.github/actions/*"  # every composite action folder
+    directory: "/" # .github/workflows
     schedule:
       interval: "weekly"
     groups:
-      actions:
+      all-deps:
+        patterns: ["*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/update-calendar"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-deps:
         patterns: ["*"]
